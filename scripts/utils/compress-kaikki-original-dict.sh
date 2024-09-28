@@ -1,0 +1,1 @@
+zip resources/$1/kaikki.org-dictionary-$2.jsonl.zip resources/$1/kaikki.org-dictionary-$2.jsonl
