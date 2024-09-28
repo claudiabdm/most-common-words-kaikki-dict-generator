@@ -1,33 +1,3 @@
-{
-  "name": "most-common-words-kaikki-dict-generator",
-  "version": "1.0.0",
-  "description": "Generates a dictionary with the 10000 most common words in the selected language with translations and word information in English.",
-  "main": "index.ts",
-  "keywords": [
-    "french",
-    "spanish",
-    "dictionary",
-    "words",
-    "english",
-    "wiktionary",
-    "lexique",
-    "kaikki"
-  ],
-  "types": "./src/types/index.ts",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/claudiabdm/most-common-words-kaikki-dict-generator.git"
-  },
-  "author": "claudiabdm",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/claudiabdm/most-common-words-kaikki-dict-generator/issues"
-  },
-  "homepage": "https://github.com/claudiabdm/most-common-words-kaikki-dict-generator#readme",
-  "dependencies": {
-    "csv-parser": "^3.0.0"
-  },
-  "devDependencies": {
-    "@types/node": "^22.7.4"
-  }
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:cba4e60af22cfd2fa0ebf43b8f169a8f51979a57e45a48bc3ae120d27badb6bb
+size 918
