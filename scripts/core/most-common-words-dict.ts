@@ -35,10 +35,17 @@ function createNewWord(kaikkiWord: KaikkiWord, size = 0): DictionaryWord {
     }
 }
 
-function addWordEntry(mainDict: Dictionary, kaikkiWord: KaikkiWord) {
+function addWordEntry(mainDict: Dictionary, kaikkiWord: KaikkiWord, langCode: LangCode) {
+    // For example, avoids adding words that are characters
     if (!CATEGORIES.includes(kaikkiWord.pos)) return;
 
+    // We're using lemmized list, so we don't want to include a different form of a word like for verbs
+    const langName = LANG[langCode];
+    const linkedWord = kaikkiWord.senses[0].links?.[0].find(l => l.includes(`#${langName}`))?.replace(`#${langName}`, '');
+    if (linkedWord && mainDict.has(linkedWord)) return;
+
     const newWord = createNewWord(kaikkiWord, mainDict.size);
+    
     // Group different entries for the same word
     if (!mainDict.has(kaikkiWord.word)) {
         mainDict.set(kaikkiWord.word, [newWord]);
@@ -50,29 +57,13 @@ function addWordEntry(mainDict: Dictionary, kaikkiWord: KaikkiWord) {
     }
 }
 
-function addWordFromKaikki(mainDict: Dictionary, kaikkiEntries: KaikkiEntries, kaikkiWord: KaikkiWord, langCode: LangCode) {
-    const langName = LANG[langCode];
-    const linkedWord = kaikkiWord.senses[0].links?.[0].find(l => l.includes(`#${langName}`))?.replace(`#${langName}`, '');
-
-    if (linkedWord) {
-        if (!mainDict.has(linkedWord)) {
-            const kaikkiEntryKey: KaikkiEntriesKey = `${linkedWord}-${langCode}`;
-            kaikkiEntries[kaikkiEntryKey]?.forEach((ww: KaikkiWord) => {
-                addWordEntry(mainDict, ww);
-            });
-        }
-    } else {
-        addWordEntry(mainDict, kaikkiWord);
-    }
-}
-
 function addOnyms(mainDict: Dictionary, baseDictionary: BaseDictionary, kaikkiEntries: KaikkiEntries, kaikkiWord: KaikkiWord, langCode: LangCode) {
     const onyms = [...(kaikkiWord.synonyms ?? []), ...(kaikkiWord.antonyms ?? [])]
     onyms.forEach(a => {
         if (!mainDict.has(a.word) && !baseDictionary.has(a.word)) {
             const kaikkiEntryKey: KaikkiEntriesKey = `${a.word}-${langCode}`;
             kaikkiEntries[kaikkiEntryKey]?.forEach((ww: KaikkiWord) => {
-                addWordFromKaikki(mainDict, kaikkiEntries, ww, langCode);
+                addWordEntry(mainDict, ww, langCode);
             });
         }
     })
@@ -93,7 +84,7 @@ function generateDictionary(baseDictionary: BaseDictionary, kaikkiEntries: Kaikk
             if (kaikkiWords) {
                 kaikkiWords.forEach(w => {
                     if (CATEGORIES.includes(w.pos)) {
-                        addWordFromKaikki(dictionary, kaikkiEntries, w, langCode);
+                        addWordEntry(dictionary, w, langCode);
                         addOnyms(dictionary, baseDictionary, kaikkiEntries, w, langCode);
                     }
                 })

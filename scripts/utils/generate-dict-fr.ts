@@ -1,3 +1,3 @@
 import { generateMostCommonWordsKaikkiDictionary } from "../core/generate-most-common-words-kaikki-dict";
 
-generateMostCommonWordsKaikkiDictionary('fr', './output/resources/fr/most-common-word-en-fr-dict.json')
+generateMostCommonWordsKaikkiDictionary('fr', './output/fr/10000-most-common-words-en-fr-dict.json')
